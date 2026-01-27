@@ -1,0 +1,37 @@
+{
+  "name": "motorhomes-backend",
+  "version": "1.0.0",
+  "description": "Motorhomes backend system with Node.js, TypeScript and PostgreSQL",
+  "main": "index.js",
+  "scripts": {
+    "dev:gateway": "cd gateway && npm run dev",
+    "dev:auth": "cd services/auth-service && npm run dev",
+    "dev:notification": "cd services/notification-service && npm run dev",
+    "dev:payment": "cd services/payment-service && npm run dev",
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "eslint. --ext .ts",
+    "format":  "prettier --write \"**/*.{ts,json,md}\""
+  },
+  "keywords": [
+    "microservices",
+    "typescript",
+    "nodejs",
+    "postgresql"
+  ],
+  "author": "Adrian Casal",
+  "license": "ISC",
+  "workspaces": [
+    "gateway",
+    "services/*",
+    "shared/*"
+  ],
+  "devDependencies": {
+    "@types/node": "25.0.10",
+    "@typescript-eslint/eslint-plugin": "8.54.0",
+    "@typescript-eslint/parser": "8.54.0",
+    "eslint": "9.39.2",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3"
+  }
+}
