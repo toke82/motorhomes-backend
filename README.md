@@ -48,7 +48,7 @@ Motorhomes backend system built with Node.js, TypeScript and PostgreSQL.
 1. Clone the repository
 ```bash
 git clone <repository-url>
-cd microservices-project
+cd motorhomes-backend
 ```
 
 2. Install dependencies
@@ -87,7 +87,7 @@ npm run dev:payment
 ## Project Structure
 
 ```
-microservices-project/
+motorhomes-project/
 ├── gateway/                  # API Gateway (Port 3000) - Entry point
 ├── services/
 │   ├── auth-service/         # Authentication Service (Port 3001)
