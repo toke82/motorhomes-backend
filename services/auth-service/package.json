@@ -1,0 +1,42 @@
+{
+  "name": "@microservices/auth-service",
+  "version": "1.0.0",
+  "description": "Authentication microservice",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "jest",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "prisma:seed": "ts-node src/scripts/seed.ts",
+    "prisma:reset": "prisma migrate reset"
+  },
+  "dependencies": {
+    "@microservices/config": "*",
+    "@prisma/client": "^5.7.0",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "helmet": "^7.1.0",
+    "cors": "^2.8.5",
+    "winston": "^3.11.0",
+    "redis": "^4.6.11",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/cors": "^2.8.17",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0",
+    "ts-node-dev": "^2.0.0",
+    "prisma": "^5.7.0",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.10"
+  }
+}
