@@ -1,10 +1,10 @@
 {
   "name": "motorhomes-backend",
   "version": "1.0.0",
-  "description": "Motorhomes backend system with Node.js, TypeScript and PostgreSQL",
+  "description": "Motorhomes microservices backend system with Node.js, TypeScript and PostgreSQL",
   "main": "index.js",
   "scripts": {
-    "dev:gateway": "cd gateway && npm run dev",
+    "dev:gateway": "cd api-gateway && npm run dev",
     "dev:auth": "cd services/auth-service && npm run dev",
     "dev:notification": "cd services/notification-service && npm run dev",
     "dev:payment": "cd services/payment-service && npm run dev",
@@ -22,7 +22,7 @@
   "author": "Adrian Casal",
   "license": "ISC",
   "workspaces": [
-    "gateway",
+    "api-gateway",
     "services/*",
     "shared/*"
   ],

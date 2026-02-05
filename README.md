@@ -88,7 +88,7 @@ npm run dev:payment
 
 ```
 motorhomes-project/
-├── gateway/                  # API Gateway (Port 3000) - Entry point
+├── api-gateway/                  # API Gateway (Port 3000) - Entry point
 ├── services/
 │   ├── auth-service/         # Authentication Service (Port 3001)
 │   ├── notification-service/ # Notification Service (Port 3002)
