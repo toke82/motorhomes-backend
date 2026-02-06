@@ -56,19 +56,31 @@ cd motorhomes-backend
 npm install
 ```
 
-3. Configure environment variables
+3. Build shared packages
+```bash
+# Build config package
+cd shared/config && npm run build
+
+# Build types package
+cd ../types && npm run build
+
+# Return to root
+cd ../../
+```
+
+4. Configure environment variables
 ```bash
 cp .env.example .env
 # Edit .env with your specific configurations
 ```
 
-4. Database setup
+5. Database setup
 ```bash
 # Run Prisma migrations
 npx prisma migrate dev
 ```
 
-5. Start the services
+6. Start the services
 
 ```bash
 # API Gateway
@@ -103,6 +115,15 @@ motorhomes-project/
 └── tsconfig.json            # TypeScript configuration
 ```
 
+## Monorepo Structure
+
+This project uses **npm workspaces** with compiled shared packages. Key points:
+
+- **Shared packages** (`shared/config`, `shared/types`) are built to `dist/` and referenced via TypeScript path aliases
+- Each microservice has its own `tsconfig.json` mapping `@microservices/*` paths to the compiled `dist` folders
+- Install dependencies from the **root** directory only
+- Always build shared packages before services that depend on them
+
 ## Available Scripts
 
 - `npm run dev:gateway` - Starts API Gateway in development mode
@@ -123,6 +144,30 @@ npm run test
 # Run tests for a specific service
 cd services/auth-service && npm test
 ```
+
+## Troubleshooting
+
+### Import resolution issues with @microservices/*
+
+If you see errors like "Cannot find module '@microservices/config'":
+
+1. Ensure shared packages are built:
+```bash
+cd shared/config && npm run build
+cd ../types && npm run build
+cd ../../
+```
+
+2. Verify TypeScript paths in the service's `tsconfig.json` point to `dist`:
+```json
+"paths": {
+  "@microservices/config": ["../../shared/config/dist"],
+  "@microservices/types": ["../../shared/types/dist"]
+}
+```
+
+3. Restart the TypeScript server in VS Code (Ctrl+Shift+P → "TypeScript: Restart TS Server")
+
 
 ## License
 
