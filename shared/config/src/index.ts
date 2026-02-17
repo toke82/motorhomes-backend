@@ -44,10 +44,10 @@ export const config = {
   
   // JWT
   jwt: {
-    secret: process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production',
-    expiresIn: process.env.JWT_EXPIRES_IN || '24h',
-    refreshSecret: process.env.JWT_REFRESH_SECRET || 'your-super-secret-refresh-key-change-this-in-production',
-    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
+    secret: process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production' as string,
+    expiresIn: process.env.JWT_EXPIRES_IN || '24h' as string,
+    refreshSecret: process.env.JWT_REFRESH_SECRET || 'your-super-secret-refresh-key-change-this-in-production' as string,
+    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d' as string,
   },
   
   // Logging

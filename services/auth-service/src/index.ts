@@ -5,6 +5,7 @@ import config from '@microservices/config';
 import logger from './utils/logger';
 import prisma from './db/prisma';
 import redisClient from './db/redis';
+import routes from './routes';
 
 const app = express();
 
@@ -44,11 +45,31 @@ app.get('/health', async (req, res) => {
 // Test route
 app.get('/', (req, res) => {
   res.json({
+    name: 'Auth Service',
     message: 'Auth Service API',
     version: '1.0.0',
     endpoints: {
       health: '/health',
+      register: 'POST /register',
+      loging: 'POST /login',
+      logout: 'POST /logout',
+      refresh: 'POST /refresh',
+      me: 'GET /me',
+      changePassword: 'PUT /change-password',
+      users: 'Get /users (admin)'
     },
+  });
+});
+
+// API Routes
+app.use('/', routes);
+
+// 404 Handler
+app.use((req, res) => {
+  logger.warn(`404 - Route not found: ${req.method} ${req.url}`);
+  res.status(404).json({
+    success: false,
+    error: 'Route not found',
   });
 });
 

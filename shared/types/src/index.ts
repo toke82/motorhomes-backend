@@ -37,7 +37,7 @@ export interface AuthTokens {
 export interface JwtPayload {
   userId: string;
   email: string;
-  role: UserRole;
+  role: string;
 }
 
 // API Response types
