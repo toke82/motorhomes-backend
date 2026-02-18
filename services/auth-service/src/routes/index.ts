@@ -4,10 +4,10 @@ import userRoutes from './userRoutes';
 
 const router = Router();
 
-// Rutas de autenticación
+// Authentication Routes
 router.use('/', authRoutes);
 
-// Rutas de usuarios (admin)
+// Users Routes (admin)
 router.use('/users', userRoutes);
 
 export default router;

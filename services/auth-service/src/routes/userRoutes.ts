@@ -6,7 +6,7 @@ import { authenticate, requireRole } from '../middleware/auth';
 
 const router = Router();
 
-// Todas las rutas requieren autenticación y rol ADMIN
+//All routes require authentication and ADMIN role
 router.use(authenticate);
 router.use(requireRole('ADMIN'));
 

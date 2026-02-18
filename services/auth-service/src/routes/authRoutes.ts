@@ -11,7 +11,7 @@ import { authenticate } from '../middleware/auth';
 
 const router = Router();
 
-// Rutas públicas
+// Public Routes
 router.post(
   '/register',
   registerValidation,
@@ -33,7 +33,7 @@ router.post(
   authController.refreshToken.bind(authController)
 );
 
-// Rutas protegidas
+// Protected Routes
 router.post(
   '/logout',
   authenticate,
