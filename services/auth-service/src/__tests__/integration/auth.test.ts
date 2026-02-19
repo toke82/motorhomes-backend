@@ -88,6 +88,7 @@ describe('Auth Endpoints - Integration Tests', () => {
                 pasword: hashedPassword,
                 firstName: 'Test',
                 lastName: 'User',
+                role: 'USER',
                 isActive: true,
                 createdAt: new Date(),
                 updatedAt: new Date(),

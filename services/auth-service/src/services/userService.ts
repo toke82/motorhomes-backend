@@ -129,7 +129,7 @@ export class UserService {
 
         // Delete all refresh tokens
         await prisma.refreshToken.deleteMany({
-            where: { id: userId },
+            where: { userId: userId },
         });
 
         logger.info(`User deactivated: ${user.email}`);

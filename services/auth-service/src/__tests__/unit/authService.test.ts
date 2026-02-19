@@ -1,7 +1,11 @@
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { AuthService } from '../../services/authService';
 import prisma from '../../db/prisma';
 import { cache } from '../../db/redis';
+
+// Mock jwt
+jest.mock('jsonwebtoken');
 
 describe('AuthService - Unit Tests', () => {
     let authService: AuthService;
@@ -220,6 +224,8 @@ describe('AuthService - Unit Tests', () => {
             (prisma.refreshToken.findUnique as jest.Mock).mockResolvedValue(mockTokenRecord);
             (prisma.refreshToken.delete as jest.Mock).mockResolvedValue({});
             (prisma.refreshToken.create as jest.Mock).mockResolvedValue({});
+            (jwt.verify as jest.Mock).mockReturnValue({ userId: 'user-123' });
+            (jwt.sign as jest.Mock).mockReturnValue('new-mock-token');
 
             const result = await authService.refreshToken('valid-refresh-token');
 

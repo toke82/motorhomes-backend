@@ -24,7 +24,7 @@ describe('UserService - Unit Tests', () => {
                 {
                     id: 'user-2',
                     email: 'user2@example.com',
-                    firsName: 'User',
+                    firstName: 'User',
                     lastName: 'Two',
                     role: 'USER',
                     isActive: true,
@@ -117,7 +117,7 @@ describe('UserService - Unit Tests', () => {
             (prisma.user.update as jest.Mock).mockResolvedValue(updatedUser);
 
             const updateData = {
-                firsName: 'Updated',
+                firstName: 'Updated',
                 lastName: 'Name',
                 role: 'ADMIN',
             };

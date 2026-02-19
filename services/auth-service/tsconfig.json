@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
   },
   "paths": {
     "@microservices/config": ["../../shared/config/dist"],
