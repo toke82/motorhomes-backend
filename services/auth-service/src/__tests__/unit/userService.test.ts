@@ -51,7 +51,7 @@ describe('UserService - Unit Tests', () => {
             (prisma.user.findMany as jest.Mock).mockResolvedValue([]);
             (prisma.user.count as jest.Mock).mockResolvedValue(0);
 
-            await userService.getAllUsers(2, 10);
+            await userService.getAllUsers(3, 10);
 
             expect(prisma.user.findMany).toHaveBeenCalledWith(
                 expect.objectContaining({

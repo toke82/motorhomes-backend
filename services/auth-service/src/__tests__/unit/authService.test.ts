@@ -1,9 +1,7 @@
 import bcrypt from 'bcryptjs';
-import { Jwt } from 'jsonwebtoken';
 import { AuthService } from '../../services/authService';
 import prisma from '../../db/prisma';
 import { cache } from '../../db/redis';
-import { UserRole } from '@microservices/types';
 
 describe('AuthService - Unit Tests', () => {
     let authService: AuthService;
@@ -122,7 +120,7 @@ describe('AuthService - Unit Tests', () => {
             const result = await authService.login(credentials);
 
             expect(result.user.email).toBe('test@example.com');
-            expect(result.tokens).toHaveProperty('accesToken');
+            expect(result.tokens).toHaveProperty('accessToken');
             expect(result.tokens).toHaveProperty('refreshToken');
         });
 
@@ -195,7 +193,7 @@ describe('AuthService - Unit Tests', () => {
                 where: { token: refreshToken },
             });
             expect(cache.set).toHaveBeenCalledWith(
-                `blackList:${refreshToken}`,
+                `blacklist:${refreshToken}`,
                 'true',
                 604800
             );
@@ -281,7 +279,7 @@ describe('AuthService - Unit Tests', () => {
 
             expect(prisma.user.update).toHaveBeenCalled();
             expect(prisma.refreshToken.deleteMany).toHaveBeenCalledWith({
-                where: { userId: 'user-1213'},
+                where: { userId: 'user-123'},
             })
         });
 
@@ -328,7 +326,7 @@ describe('AuthService - Unit Tests', () => {
 
             expect(result).toEqual(mockUser);
             expect(prisma.user.findUnique).toHaveBeenCalledWith({
-                where: { id: 'user-123 '},
+                where: { id: 'user-123'},
                 select: expect.any(Object),
             });
         });
