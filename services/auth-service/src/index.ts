@@ -51,7 +51,7 @@ app.get('/', (req, res) => {
     endpoints: {
       health: '/health',
       register: 'POST /register',
-      loging: 'POST /login',
+      login: 'POST /login',
       logout: 'POST /logout',
       refresh: 'POST /refresh',
       me: 'GET /me',

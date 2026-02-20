@@ -19,6 +19,7 @@ jest.mock('../db/prisma', () => ({
       deleteMany: jest.fn(),
     },
     $queryRaw: jest.fn(),
+    $disconnect: jest.fn().mockResolvedValue(undefined),
   },
 }));
 

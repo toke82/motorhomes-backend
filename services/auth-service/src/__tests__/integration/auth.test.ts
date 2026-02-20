@@ -315,10 +315,9 @@ describe('Auth Endpoints - Integration Tests', () => {
         });
     });
 
-    // // Clean connections after all tests
-    // afterAll(async () => {
-    //     //Close connections to prevent Jest from hanging
-    //     await prisma.$disconnect();
-    //     await cache.quit?.();
-    // });
+    // Clean connections after all tests
+    afterAll(async () => {
+        //Close connections to prevent Jest from hanging
+       await prisma.$disconnect();
+    });
 });

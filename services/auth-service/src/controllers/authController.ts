@@ -170,7 +170,7 @@ export class AuthController {
             logger.error('Change password error:', error);
 
             const message = error instanceof Error ? error.message : 'Password changed failed';
-            const statusCode = message === 'Current password is incorrect' ? 400 : 5000;
+            const statusCode = message === 'Current password is incorrect' ? 400 : 500;
 
             res.status(statusCode).json({
                 success: false,
