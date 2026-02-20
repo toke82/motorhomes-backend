@@ -1,9 +1,35 @@
 import request from 'supertest';
 import app from '../../index';
 import prisma from '../../db/prisma';
+import { cache } from '../../db/redis';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import config from '@microservices/config';
+
+// Jwt Mock before tests
+jest.mock('jsonwebtoken', () => ({
+    sign: jest.fn(),
+    verify: jest.fn(),
+}));
 
 describe('Auth Endpoints - Integration Tests', () => {
+    // Helper to generate valid tokens
+    const generateValidToken = (userId: string, email: string, role: string) => {
+        const realJWT = jest.requireActual('jsonwebtoken');
+        return realJWT.sign(
+            { userId, email, role },
+            config.jwt.secret,
+            { expiresIn: '1h' } as jwt.SignOptions
+        );
+    };
+
+    beforeEach(() => {
+        //Reset mocks before each test
+        jest.clearAllMocks();
+        //By default, jwt.sign returns a mocked token
+        (jwt.sign as jest.Mock).mockReturnValue('mocked-jwt-token');
+    });
+
     describe('POST /register', () => {
         it('should register a new user', async () => {
             (prisma.user.findUnique as jest.Mock).mockResolvedValue(null);
@@ -85,7 +111,7 @@ describe('Auth Endpoints - Integration Tests', () => {
             (prisma.user.findUnique as jest.Mock).mockResolvedValue({
                 id: 'user-123',
                 email: 'test@example.com',
-                pasword: hashedPassword,
+                password: hashedPassword,
                 firstName: 'Test',
                 lastName: 'User',
                 role: 'USER',
@@ -184,10 +210,17 @@ describe('Auth Endpoints - Integration Tests', () => {
 
             //You would need to generate a valid token here
             //Or mock the authentication middleware
+            const validToken = generateValidToken('user-123', 'test@example.com', 'USER');
+
+            (jwt.verify as jest.Mock).mockReturnValue({
+                userId: 'user-123',
+                email: 'test@example.com',
+                role: 'USER'
+            });
 
             const response = await request(app)
                 .get('/me')
-                .set('Authorization', 'Bearer valid-token')
+                .set('Authorization', `Bearer ${validToken}`)
                 .expect(200);
 
             expect(response.body.success).toBe(true);
@@ -205,10 +238,21 @@ describe('Auth Endpoints - Integration Tests', () => {
     describe('POST /logout', () => {
         it('should logout successfully', async () => {
             (prisma.refreshToken.deleteMany as jest.Mock).mockResolvedValue({ count: 1 });
+            (cache.set as jest.Mock).mockResolvedValue('OK');
+
+            //You would need to generate a valid token here
+            //Or mock the authentication middleware
+            const validToken = generateValidToken('user-123', 'test@example.com', 'USER');
+
+            (jwt.verify as jest.Mock).mockReturnValue({
+                userId: 'user-123',
+                email: 'test@example.com',
+                role: 'USER'
+            });            
 
             const response = await request(app)
                 .post('/logout')
-                .set('Authorization', 'Bearer valid-token')
+                .set('Authorization', `Bearer ${validToken}`)
                 .send({
                     refreshToken: 'valid-refresh-token'
                 })
@@ -227,6 +271,13 @@ describe('Auth Endpoints - Integration Tests', () => {
                 role: 'USER',
             };
 
+            const validRefreshToken = jwt.sign(
+                { userId: 'user-123', email: 'test@example.com', role: 'USER' },
+                config.jwt.refreshSecret,
+                { expiresIn: '7d' } as jwt.SignOptions
+            );
+
+            (cache.exists as jest.Mock).mockResolvedValue(false);
             (prisma.refreshToken.findUnique as jest.Mock).mockResolvedValue({
                 id: 'token-123',
                 token: 'valid-refresh-token',
@@ -240,7 +291,7 @@ describe('Auth Endpoints - Integration Tests', () => {
             const response = await request(app)
                 .post('/refresh')
                 .send({
-                    refreshToken: 'valid-refres-token'
+                    refreshToken: validRefreshToken
                 })
                 expect(200);
 
@@ -263,4 +314,11 @@ describe('Auth Endpoints - Integration Tests', () => {
             expect(response.body.error).toBe('Invalid refresh token');
         });
     });
+
+    // // Clean connections after all tests
+    // afterAll(async () => {
+    //     //Close connections to prevent Jest from hanging
+    //     await prisma.$disconnect();
+    //     await cache.quit?.();
+    // });
 });
